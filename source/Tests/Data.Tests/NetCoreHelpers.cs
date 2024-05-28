@@ -1,6 +1,4 @@
 ﻿using System.Data.Common;
-using System.Data.Odbc;
-using System.Data.OleDb;
 using System.Data.SqlClient;
 using Oracle.ManagedDataAccess.Client;
 
@@ -16,8 +14,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias1", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias2", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
-            DbProviderFactories.RegisterFactory("System.Data.Odbc", OdbcFactory.Instance);
-            DbProviderFactories.RegisterFactory("System.Data.OleDb", OleDbFactory.Instance);
 #endif
         }
     }

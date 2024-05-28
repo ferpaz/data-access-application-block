@@ -3,22 +3,17 @@
 using System;
 using System.Configuration;
 using System.Data.Common;
-using System.Data.Odbc;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.TestSupport.ContextBase;
 using Microsoft.Practices.EnterpriseLibrary.Data.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Configuration.Fluent;
-using Microsoft.Practices.EnterpriseLibrary.Data.Odbc.Configuration.Fluent;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Configuration.Fluent;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql.Configuration.Fluent;
-#if NET47
-using Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Configuration.Fluent;
-#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oracle.ManagedDataAccess.Client;
 
@@ -241,124 +236,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
     }
 #pragma warning restore 612, 618
 
-    [TestClass]
-    public class When_PassingNullConnectionStringBuilderToOdbcDatabase : Given_NamedDatabase
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Then_WithConnectionString_ThrowsArgumentNullException()
-        {
-            DatabaseConfiguration
-                .ThatIs.AnOdbcDatabase()
-                    .WithConnectionString((OdbcConnectionStringBuilder)null);
-        }
-    }
-
-    [TestClass]
-    public class When_PassingNullConnectionStringToOdbcDatabase : Given_NamedDatabase
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Then_WithConnectionString_ThrowsArgumentException()
-        {
-            DatabaseConfiguration
-                .ThatIs.AnOdbcDatabase()
-                    .WithConnectionString((string)null);
-        }
-    }
-
-    [TestClass]
-    public class When_ConfiguringForOdbcProvider : Given_NamedDatabase
-    {
-
-        private OdbcConnectionStringBuilder builder;
-
-        protected override void Arrange()
-        {
-            base.Arrange();
-            builder = new OdbcConnectionStringBuilder()
-            {
-                Dsn = "OdbcDsn",
-                Driver = "OdbcDriver"
-            };
-        }
-
-        protected override void Act()
-        {
-            DatabaseConfiguration
-                .ThatIs.AnOdbcDatabase()
-                    .WithConnectionString(builder);
-        }
-
-        [TestMethod]
-        public void Then_ConnectionStringProviderIsOleDb()
-        {
-            Assert.AreEqual("System.Data.Odbc", GetConnectionStringSettings().ProviderName);
-        }
-
-        [TestMethod]
-        public void Then_ConnectionStringMatchesBuilderString()
-        {
-            Assert.AreEqual(builder.ConnectionString, GetConnectionStringSettings().ConnectionString);
-        }
-    }
-#if NET47
-    [TestClass]
-    public class When_PassingNullConnectionStringToSqlCeDatabase : Given_NamedDatabase
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Then_WithConnectionString_ThrowsArgumentException()
-        {
-            DatabaseConfiguration
-                .ThatIs.ASqlCeDatabase()
-                    .WithConnectionString(string.Empty);
-        }
-    }
-
-    [TestClass]
-    public class When_ConfiguringForSqlCeProvider : Given_NamedDatabase
-    {
-
-        protected override void Act()
-        {
-            DatabaseConfiguration
-                .ThatIs.ASqlCeDatabase()
-                    .WithConnectionString("someConnection");
-        }
-
-        [TestMethod]
-        public void Then_ConnectionStringProviderIsSqlServerCe()
-        {
-            Assert.AreEqual("System.Data.SqlServerCe", GetConnectionStringSettings().ProviderName);
-        }
-
-        [TestMethod]
-        public void Then_ConnectionStringIsConfigured()
-        {
-            Assert.AreEqual("someConnection", GetConnectionStringSettings().ConnectionString);
-        }
-    }
-#endif
-    [TestClass]
-    public class When_ConfiguringForOdbcProviderWithoutBuilder : Given_NamedDatabase
-    {
-
-        protected override void Act()
-        {
-            DatabaseConfiguration
-                .ThatIs.AnOdbcDatabase()
-                    .WithConnectionString("someConnectionString");
-        }
-
-        [TestMethod]
-        public void Then_ConnectionStringMatchesProvidedString()
-        {
-            Assert.AreEqual("someConnectionString", GetConnectionStringSettings().ConnectionString);
-        }
-    }
-
-#pragma warning disable 612, 618
     [TestClass]
     public class When_ConfiguringOraclePackagesPassingNullForPackageName : Given_NamedDatabase
     {

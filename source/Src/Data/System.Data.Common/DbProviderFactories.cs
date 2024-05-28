@@ -168,7 +168,7 @@ namespace System.Data.Common
             DbProviderFactoryConfigSection[] dbFactoriesConfigSection = new DbProviderFactoryConfigSection[(int)DbProvidersIndex.DbProvidersIndexCount];
 
             //ToDo: Missing providers in .Net Core
-            dbFactoriesConfigSection[(int)DbProvidersIndex.Odbc] = new DbProviderFactoryConfigSection(typeof(System.Data.Odbc.OdbcFactory), DbProviderFactoriesConfigurationHandler.odbcProviderName, DbProviderFactoriesConfigurationHandler.odbcProviderDescription);
+            //dbFactoriesConfigSection[(int)DbProvidersIndex.Odbc] = new DbProviderFactoryConfigSection(typeof(System.Data.Odbc.OdbcFactory), DbProviderFactoriesConfigurationHandler.odbcProviderName, DbProviderFactoriesConfigurationHandler.odbcProviderDescription);
             //dbFactoriesConfigSection[(int)DbProvidersIndex.OleDb] = new DbProviderFactoryConfigSection(typeof(System.Data.OleDb.OleDbFactory), DbProviderFactoriesConfigurationHandler.oledbProviderName, DbProviderFactoriesConfigurationHandler.oledbProviderDescription);
             dbFactoriesConfigSection[(int)DbProvidersIndex.OracleClient] = new DbProviderFactoryConfigSection(DbProviderFactoriesConfigurationHandler.oracleclientProviderName, DbProviderFactoriesConfigurationHandler.oracleclientProviderNamespace, DbProviderFactoriesConfigurationHandler.oracleclientProviderDescription, asmQualName);
             dbFactoriesConfigSection[(int)DbProvidersIndex.SqlClient] = new DbProviderFactoryConfigSection(typeof(System.Data.SqlClient.SqlClientFactory), DbProviderFactoriesConfigurationHandler.sqlclientProviderName, DbProviderFactoriesConfigurationHandler.sqlclientProviderDescription);

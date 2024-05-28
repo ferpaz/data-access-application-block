@@ -37,23 +37,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         }
 
         [TestMethod]
-        public void CanDoExecuteDataReaderForGenericDatabaseBug1836()
-        {
-            Database db = new GenericDatabase($@"Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};Dbq={Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Northwind.mdb;Uid=sa;Pwd=sa;", OdbcFactory.Instance);
-            
-            using (DbConnection connection = db.CreateConnection())
-            {
-                connection.Open();
-
-                using (DbTransaction transaction = connection.BeginTransaction())
-                {
-                    using (IDataReader dataReader = db.ExecuteReader(transaction, CommandType.Text, "select * from [Order Details]")) { }
-                    transaction.Commit();
-                }
-            }
-        }
-
-        [TestMethod]
         public void CanDoExecuteDataReaderForGenericDatabaseForSqlProviderBug1836()
         {
             Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);

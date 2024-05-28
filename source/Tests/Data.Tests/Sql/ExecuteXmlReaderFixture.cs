@@ -78,13 +78,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ExecuteXmlReaderWithWrongCommandTypeWillThrow()
-        {
-            sqlDatabase.ExecuteXmlReader(new OdbcCommand());
-        }
-
-        [TestMethod]
         public void CanExecuteXmlQueryThroughTransaction()
         {
             string knownGoodOutputAfterChange =

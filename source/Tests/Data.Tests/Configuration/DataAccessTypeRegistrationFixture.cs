@@ -46,39 +46,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
     }
 
     [TestClass]
-    public class GivenConnectionForOdbcDatabase
-    {
-        private DictionaryConfigurationSource configurationSource;
-        private DatabaseSyntheticConfigSettings settings;
-
-        [TestInitialize]
-        public void Given()
-        {
-            configurationSource = new DictionaryConfigurationSource();
-            var connectionStringsSection = new ConnectionStringsSection();
-            connectionStringsSection.ConnectionStrings.Add(
-                new ConnectionStringSettings
-                    {
-                        Name = "odbc connection",
-                        ConnectionString = "connection string",
-                        ProviderName = "System.Data.Odbc"
-                    });
-            configurationSource.Add("connectionStrings", connectionStringsSection);
-
-            settings = new DatabaseSyntheticConfigSettings(configurationSource.GetSection);
-        }
-
-        [TestMethod]
-        public void when_creating_database_then_creates_generic_database()
-        {
-            var database = this.settings.Databases.First().BuildDatabase();
-
-            Assert.IsInstanceOfType(database, typeof(GenericDatabase));
-            Assert.AreEqual("connection string", database.ConnectionString);
-        }
-    }
-
-    [TestClass]
     public class GivenConfigurationForAnOracleDatabase
     {
         private DictionaryConfigurationSource configurationSource;

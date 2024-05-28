@@ -4,7 +4,6 @@ using System;
 using System.Configuration;
 using System.Data.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.Data.Odbc;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -108,19 +107,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             Assert.AreEqual(DatabaseFactoryFixture.OracleTestStoredProcedureInPackageWithoutTranslation,
                             createdObject.GetStoredProcCommand(
                                 DatabaseFactoryFixture.OracleTestStoredProcedureInPackageWithoutTranslation).CommandText);
-        }
-#pragma warning restore 612, 618
-
-        [TestMethod]
-        public void CanCreateGenericDatabaseFromFactory()
-        {
-            var factory = new DatabaseProviderFactory(new SystemConfigurationSource(false).GetSection);
-
-            OdbcDatabase createdObject = (OdbcDatabase)factory.Create("OdbcDatabase");
-            Assert.IsNotNull(createdObject);
-            Assert.AreEqual("some connection string;",
-                            createdObject.ConnectionStringWithoutCredentials);
-            Assert.AreEqual(DbProviderFactories.GetFactory("System.Data.Odbc"), createdObject.DbProviderFactory);
         }
     }
 }

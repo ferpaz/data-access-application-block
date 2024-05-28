@@ -34,7 +34,6 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManagerVersion)" />
     <!-- required for System.Data.Common shim -->
-    <PackageReference Include="System.Data.Odbc" Version="$(SystemDataOdbcVersion)" />
     <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
   </ItemGroup>
 
