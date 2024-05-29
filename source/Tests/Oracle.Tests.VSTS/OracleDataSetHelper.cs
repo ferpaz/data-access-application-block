@@ -34,7 +34,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
             DbCommand command;
             string sql;
 
-            sql = "create procedure RegionSelect (cur_OUT OUT PKGENTLIB_ARCHITECTURE.CURENTLIB_ARCHITECTURE) as " +
+            sql = "create procedure RegionSelect (cur_OUT OUT cursor_retorno.ret_cursor) as " +
                 "BEGIN OPEN cur_OUT FOR select * from Region Order By RegionId; END;";
 
             command = db.GetSqlStringCommand(sql);

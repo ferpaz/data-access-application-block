@@ -36,7 +36,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             ConnectionStringSettings data = settings.GetConnectionStringSettings("DbWithSqlServerAuthn");
             SqlDatabase sqlDatabase = new SqlDatabase(data.ConnectionString);
 
-            Assert.AreEqual(String.Format(@"server={0};database=northwind;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=false;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             ConnectionStringSettings data = settings.GetConnectionStringSettings("NewDatabase");
             SqlDatabase sqlDatabase = new SqlDatabase(data.ConnectionString);
 
-            Assert.AreEqual(String.Format(@"server={0};database=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             {
                 CreateUser();
                 ConnectionString testString =
-                    new ConnectionString(String.Format(@"server={0};database=Northwind;uid=entlib;pwd=hdf7&834k(*KA;Persist Security Info=false", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), "UserId,UId", "Password,Pwd");
+                    new ConnectionString(String.Format(@"server={0};initial catalog=Northwind;uid=entlib;pwd=hdf7&834k(*KA;Persist Security Info=false", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), "UserId,UId", "Password,Pwd");
                 SqlDatabase sqlDatabase = new SqlDatabase(testString.ToString());
                 DbConnection dbConnection = sqlDatabase.CreateConnection();
                 dbConnection.Open();

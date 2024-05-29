@@ -31,9 +31,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
 
         protected override void CreateStoredProcedure()
         {
-            string storedProcedureCreation = "CREATE procedure TestProc " +
-                                             "(vCount OUT INT, vCustomerId Orders.CustomerID%TYPE) as " +
-                                             "BEGIN SELECT count(*)INTO vCount FROM Orders WHERE CustomerId = vCustomerId; END;";
+            string storedProcedureCreation = "create or replace procedure TestProc " +
+                                             "(vCount OUT INT, vCustomerId Orders.CUSTOMER_ID%TYPE) as " +
+                                             "BEGIN SELECT count(*)INTO vCount FROM Orders WHERE Customer_Id = vCustomerId; END;";
 
             DbCommand command = db.GetSqlStringCommand(storedProcedureCreation);
             db.ExecuteNonQuery(command);
@@ -49,13 +49,13 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [TestMethod]
         public void CanGetOutputValueFromStoredProcedure()
         {
-            baseFixture.CanGetOutputValueFromStoredProcedure();
+            baseFixture.CanGetOutputValueFromStoredProcedure("20");
         }
 
         [TestMethod]
         public void CanGetOutputValueFromStoredProcedureWithCachedParameters()
         {
-            baseFixture.CanGetOutputValueFromStoredProcedureWithCachedParameters();
+            baseFixture.CanGetOutputValueFromStoredProcedureWithCachedParameters("20");
         }
 
         [TestMethod(), ExpectedException(typeof(InvalidOperationException))]
@@ -73,7 +73,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [TestMethod(), ExpectedException(typeof(InvalidOperationException))]
         public void ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues()
         {
-            baseFixture.ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues();
+            baseFixture.ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues("20");
         }
     }
 }

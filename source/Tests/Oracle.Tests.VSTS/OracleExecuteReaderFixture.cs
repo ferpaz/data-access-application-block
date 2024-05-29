@@ -45,7 +45,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         public void Bug869Test()
         {
             object[] paramarray = new object[2];
-            paramarray[0] = "BLAUS";
+            paramarray[0] = "6";
             paramarray[1] = null;
 
             using (IDataReader dataReader = db.ExecuteReader("GetCustomerByID", paramarray))
@@ -53,8 +53,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
                 while (dataReader.Read())
                 {
                     // Get the value of the 'Name' column in the DataReader
-                    Assert.IsNotNull(dataReader["ContactName"]);
-                    Assert.AreEqual(dataReader["ContactName"], "Hanna Moos");
+                    Assert.IsNotNull(dataReader["Contact_Name"]);
+                    Assert.AreEqual(dataReader["Contact_Name"], "Hanna Moos");
                 }
                 dataReader.Close();
             }

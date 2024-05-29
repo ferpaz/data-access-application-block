@@ -27,7 +27,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
-            Assert.AreEqual(String.Format(@"server={0};database=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
                             createdObject.ConnectionStringWithoutCredentials);
         }
 
@@ -39,7 +39,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
-            Assert.AreEqual(String.Format(@"server={0};database=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
                             createdObject.ConnectionStringWithoutCredentials);
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             Database createdObject = factory.Create("Service_Dflt");
 
             Assert.IsNotNull(createdObject);
-            Assert.AreEqual(String.Format(@"server={0};database=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
                             createdObject.ConnectionStringWithoutCredentials);
         }
 
@@ -98,7 +98,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             OracleDatabase createdObject = (OracleDatabase)factory.Create("OracleTest");
             Assert.IsNotNull(createdObject);
-            Assert.AreEqual(@"server=entlib;", createdObject.ConnectionStringWithoutCredentials);
+            //Assert.AreEqual(@"server=entlib;", createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(@"data source=(description=(cid=xe)(address_list=(address=(protocol=tcp)(host=localhost)(port=1521)))(connect_data=(sid=xe)(server=dedicated)));", createdObject.ConnectionStringWithoutCredentials);
 
             // can do the configured package mapping?
             Assert.AreEqual(DatabaseFactoryFixture.OracleTestTranslatedStoredProcedureInPackageWithTranslation,

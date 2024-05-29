@@ -45,13 +45,13 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestMethod]
         public void CanGetOutputValueFromStoredProcedure()
         {
-            baseFixture.CanGetOutputValueFromStoredProcedure();
+            baseFixture.CanGetOutputValueFromStoredProcedure("ERNSH");
         }
 
         [TestMethod]
         public void CanGetOutputValueFromStoredProcedureWithCachedParameters()
         {
-            baseFixture.CanGetOutputValueFromStoredProcedureWithCachedParameters();
+            baseFixture.CanGetOutputValueFromStoredProcedureWithCachedParameters("ERNSH");
         }
 
         [TestMethod(), ExpectedException(typeof(InvalidOperationException))]
@@ -69,7 +69,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestMethod(), ExpectedException(typeof(InvalidOperationException))]
         public void ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues()
         {
-            baseFixture.ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues();
+            baseFixture.ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues("ERNSH");
         }
     }
 }

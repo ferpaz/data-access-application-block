@@ -30,30 +30,30 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.TestSupport
             db.ExecuteNonQuery(invalidCommand);
         }
 
-        public void CanGetOutputValueFromStoredProcedure()
+        public void CanGetOutputValueFromStoredProcedure(string vCustomerId)
         {
-            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, "ALFKI");
+            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, vCustomerId);
             db.ExecuteNonQuery(storedProcedure);
 
             int resultCount = Convert.ToInt32(db.GetParameterValue(storedProcedure, "vCount"));
-            Assert.AreEqual(6, resultCount);
+            Assert.AreEqual(30, resultCount);
         }
 
-        public void CanGetOutputValueFromStoredProcedureWithCachedParameters()
+        public void CanGetOutputValueFromStoredProcedureWithCachedParameters(string vCustomerId)
         {
-            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, "ALFKI");
+            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, vCustomerId);
             db.ExecuteNonQuery(storedProcedure);
 
-            DbCommand duplicateStoredProcedure = db.GetStoredProcCommand("TestProc", null, "CHOPS");
+            DbCommand duplicateStoredProcedure = db.GetStoredProcCommand("TestProc", null, vCustomerId);
             db.ExecuteNonQuery(duplicateStoredProcedure);
 
             int resultCount = Convert.ToInt32(db.GetParameterValue(duplicateStoredProcedure, "vCount"));
-            Assert.AreEqual(8, resultCount);
+            Assert.AreEqual(30, resultCount);
         }
 
-        public void ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues()
+        public void ExceptionThrownWhenReadingParametersFromCacheWithTooFewParameterValues(string vCustomerId)
         {
-            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, "ALFKI");
+            DbCommand storedProcedure = db.GetStoredProcCommand("TestProc", null, vCustomerId);
             db.ExecuteNonQuery(storedProcedure);
 
             DbCommand duplicateStoredProcedure = db.GetStoredProcCommand("TestProc", "CHOPS");

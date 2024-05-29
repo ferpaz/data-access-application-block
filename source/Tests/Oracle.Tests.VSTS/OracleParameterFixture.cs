@@ -41,11 +41,12 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
                 connection.Open();
                 using (DbTransaction transaction = connection.BeginTransaction())
                 {
-                    string sqlString = "insert into Customers (CustomerID, CompanyName, ContactName) Values (:id, :name, :contact)";
+                    string sqlString = "insert into Customers (Customer_ID, Company_Name, Contact_Name, CUSTOMER_CODE) Values (:id, :name, :contact, :customercode)";
                     DbCommand insert = db.GetSqlStringCommand(sqlString);
-                    db.AddInParameter(insert, ":id", DbType.Int32, 1);
+                    db.AddInParameter(insert, ":id", DbType.Int32, 1000);
                     db.AddInParameter(insert, ":name", DbType.String, "fee");
                     db.AddInParameter(insert, ":contact", DbType.String, null);
+                    db.AddInParameter(insert, ":customercode", DbType.String, "12345");
 
                     db.ExecuteNonQuery(insert, transaction);
                     transaction.Rollback();

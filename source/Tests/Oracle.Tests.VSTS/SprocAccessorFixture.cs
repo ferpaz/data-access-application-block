@@ -26,7 +26,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         public void ThenCanExecuteParameterizedSproc()
         {
             var accessor = database.CreateSprocAccessor<Customer>("GetCustomerById");
-            var result = accessor.Execute("BLAUS", null).ToArray();
+            var result = accessor.Execute("20", null).ToArray();
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Length > 0);
@@ -34,7 +34,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
 
         private class Customer
         {
-            public string ContactName { get; set; }
+            public string Contact_Name { get; set; }
         }
     }
 #pragma warning restore 612, 618
