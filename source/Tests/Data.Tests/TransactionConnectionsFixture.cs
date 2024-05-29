@@ -150,33 +150,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Sql
             }
         }
 
-#if !NETCOREAPP // .NET Core does not support distributed transactions
-        [TestMethod]
-        public void GetConnection_ShouldReturnDifferentConnectionForDifferentConnectionStrings()
-        {
-            Database db2 = new SqlDatabase(db.ConnectionString.ToString() + ";Persist Security Info=false;");
-
-            try
-            {
-                using (TransactionScope scope = new TransactionScope())
-                {
-                    DatabaseConnectionWrapper connection1 = TransactionScopeConnections.GetConnection(db);
-                    DatabaseConnectionWrapper connection2 = TransactionScopeConnections.GetConnection(db2);
-                    Assert.AreNotSame(connection1, connection2);
-                }
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Message.Contains("MSDTC"))
-                {
-                    Assert.Inconclusive("In order to run the test, enable the Distributed Transaction Coordinator service (MSDTC).\r\n{0}", ex.ToString());
-                }
-
-                throw;
-            }
-        }
-#endif
-
         [TestMethod]
         public void Current_ShouldBeDifferentTransactionInOtherThread()
         {

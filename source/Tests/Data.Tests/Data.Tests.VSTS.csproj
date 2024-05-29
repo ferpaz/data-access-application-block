@@ -2,7 +2,7 @@
   <Import Project="..\..\..\package.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net47;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net47;net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
 
     <AssemblyVersion>$(MajorVersion).0.0.0</AssemblyVersion>
@@ -32,12 +32,12 @@
     <ProjectReference Include="..\Data.TestSupport\Data.TestSupport.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) OR $(TargetFramework.StartsWith('netcoreapp'))">
+  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.18.3" />
     <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
   </ItemGroup>
 
-  <ItemGroup Condition="!$(TargetFramework.StartsWith('netstandard')) AND !$(TargetFramework.StartsWith('netcoreapp'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Management" />
@@ -79,12 +79,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) OR $(TargetFramework.StartsWith('netcoreapp'))">
+  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <!-- Asynchronous Programming Model is not supported by .NET Core (use Task-based Asynchronous Pattern instead) -->
     <Compile Remove="**\AsynchronousExecutionFixture.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="!$(TargetFramework.StartsWith('netstandard')) AND !$(TargetFramework.StartsWith('netcoreapp'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     
   </ItemGroup>
 

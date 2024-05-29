@@ -23,11 +23,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         protected override void Arrange()
         {
             var rawConnectionString =
-#if NETCOREAPP
             @"server={0};database=Northwind;Integrated Security=true;";
-#else
-            @"server={0};database=Northwind;Integrated Security=true; Async=True";
-#endif
             ConnectionString = String.Format(rawConnectionString, ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
             Database = new TestableSqlDatabase(ConnectionString, this);
         }

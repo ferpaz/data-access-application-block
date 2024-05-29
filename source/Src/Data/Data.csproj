@@ -2,7 +2,7 @@
   <Import Project="..\..\..\package.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net452;net46;net47;netstandard2.0;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net47;net472;netstandard2.0;net6.0;net8.0</TargetFrameworks>
 
     <AssemblyVersion>$(MajorVersion).0.0.0</AssemblyVersion>
     <FileVersion>$(Version).$(Revision)</FileVersion>
@@ -31,13 +31,13 @@
     <PackageReference Include="$(PrePackageName).Common$(PostPackageName)" Version="$(EntLibCommonVersion)" Condition="!Exists('$(EntLibCommon)') OR '$(EntLibDependencyType)' == 'Package'" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
+  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="$(SystemConfigurationConfigurationManagerVersion)" />
     <!-- required for System.Data.Common shim -->
     <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
   </ItemGroup>
 
-  <ItemGroup Condition="!$(TargetFramework.StartsWith('netstandard')) AND !$(TargetFramework.StartsWith('netcoreapp'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <Reference Include="System.Transactions" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
