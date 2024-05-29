@@ -16,7 +16,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
     /// </summary>
     public class DatabaseProviderFactory
     {
-        private DatabaseConfigurationBuilder builder;
+        private readonly DatabaseConfigurationBuilder builder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseProviderFactory"/> class
@@ -74,7 +74,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
             return this.builder.Create(name);
         }
 
-        private class DatabaseConfigurationBuilder
+        private sealed class DatabaseConfigurationBuilder
         {
             private readonly DatabaseSyntheticConfigSettings settings;
             private readonly ConcurrentDictionary<string, DatabaseData> databases;
