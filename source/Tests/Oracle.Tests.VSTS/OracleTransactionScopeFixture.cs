@@ -25,7 +25,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
     /// </remarks>
     /// </summary>
     [TestClass]
-    [Ignore]
     public class OracleTransactionScopeFixture
     {
         TransactionScopeFixture baseFixture;
@@ -99,6 +98,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         }
 
         [TestMethod]
+        [Ignore("Fails because the Oracle client support ReadCommited or Serializable transactions isolation level.")]
         public void ShouldAllowCommandsAfterInnerScopeDisposed()
         {
             baseFixture.ShouldAllowCommandsAfterInnerScopeDisposed();
@@ -129,6 +129,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         }
 
         [TestMethod]
+        [Ignore("Fails because the Oracle cliente returns -1 instead of the number of rows affected.")]
         public void ExecuteNonQueryWithStoredProcedure_ShouldUseTransaction()
         {
             baseFixture.ExecuteNonQueryWithStoredProcedure_ShouldUseTransaction();
@@ -219,6 +220,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void UpdateDataSetWithUpdateBlockSize_ShouldAddToTransaction()
         {
             baseFixture.UpdateDataSetWithUpdateBlockSize_ShouldAddToTransaction();

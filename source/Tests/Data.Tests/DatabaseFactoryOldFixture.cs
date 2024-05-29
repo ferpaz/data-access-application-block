@@ -22,7 +22,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
 #pragma warning disable 612, 618
         private static readonly Database[] databases = new Database[]
         {
-            new SqlDatabase(".\\sqlexpress"),
+            new SqlDatabase("."),
             new OracleDatabase("test")
         };
 #pragma warning restore 612, 618

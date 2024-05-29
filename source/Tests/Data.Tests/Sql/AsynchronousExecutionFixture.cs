@@ -28,7 +28,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     [TestClass]
     public class WhenUsingAnySqlDatabase : ArrangeActAssert
     {
-        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true;Async=True", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
         protected SqlDatabase database;
 
         protected override void Arrange()
@@ -56,7 +56,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     {
         protected int numberOfConnectionsCreated;
         protected ConnectionState lastConnectionStateChange;
-        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true;Async=True", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
         protected SqlDatabase database;
 
         protected override void Arrange()
@@ -532,6 +532,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         public void ThenNoNewConnectionWasCreated()
         {
             database.EndExecuteXmlReader(asyncResult).Close();
+            while (!asyncResult.IsCompleted) 
+            {
+                System.Threading.Thread.Sleep(100);
+            }
+
             Assert.AreEqual(0, numberOfConnectionsCreated);
         }
 

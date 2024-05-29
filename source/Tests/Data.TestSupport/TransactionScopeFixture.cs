@@ -153,7 +153,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.TestSupport
             using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 int rows = db.ExecuteNonQuery("RegionInsert", 77, "Elbonia");
-                Assert.AreEqual(rows, 1);
+                Assert.AreEqual(1, rows);
             }
             Assert.AreEqual(totalRows, TotalRows());
         }
