@@ -17,8 +17,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
 
         protected override void Arrange()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             EnvironmentHelper.AssertOracleClientIsInstalled();
-            String connectionString = ConfigurationManager.ConnectionStrings["OracleTest"].ConnectionString;
+            String connectionString = OracleTestConfigurationSource.GetConnectionStringSettings("OracleTest").ConnectionString;
             database = new OracleDatabase(connectionString);
         }
 

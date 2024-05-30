@@ -456,7 +456,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
                 .WithProviderNamed("CustomProvider")
                     .MappedToDatabase<SqlDatabase>()
                 .WithProviderNamed("AnotherProvider")
-                    .MappedToDatabase<OracleDatabase>();
+                    .MappedToDatabase<Microsoft.Practices.EnterpriseLibrary.Data.Oracle.OracleDatabase>();
         }
 
         [TestMethod]
@@ -472,7 +472,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         {
             var settings = GetSectionFromBuilder<DatabaseSettings>();
             var mapping = settings.ProviderMappings.Single(m => m.Name == "AnotherProvider");
-            Assert.AreEqual(typeof(OracleDatabase), mapping.DatabaseType);
+            Assert.AreEqual(typeof(Microsoft.Practices.EnterpriseLibrary.Data.Oracle.OracleDatabase), mapping.DatabaseType);
 
         }
     }

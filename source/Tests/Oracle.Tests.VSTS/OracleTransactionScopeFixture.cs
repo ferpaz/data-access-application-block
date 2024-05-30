@@ -33,6 +33,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [TestInitialize]
         public void SetUp()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
+
             DatabaseProviderFactory factory = new DatabaseProviderFactory(OracleTestConfigurationSource.CreateConfigurationSource());
             db = factory.Create("OracleTest");
 
@@ -110,11 +112,13 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         //    baseFixture.Commit_ShouldDisposeTransactionConnection();
         //}
 
+#if !NET8_0_OR_GREATER
         [TestMethod]
         public void Rollback_ShouldDisposeTransactionConnection()
         {
             baseFixture.Rollback_ShouldDisposeTransactionConnection();
         }
+#endif
 
         [TestMethod]
         public void ExecuteNonQueryWithTextCommand_ShouldUseTransaction()

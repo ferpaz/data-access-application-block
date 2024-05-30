@@ -3,11 +3,12 @@
 using System;
 using System.Configuration;
 using System.Data.Common;
-using Oracle.ManagedDataAccess.Client;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Oracle.ManagedDataAccess.Client;
+
 
 namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
 {
@@ -20,6 +21,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [TestInitialize]
         public void SetUp()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             EnvironmentHelper.AssertOracleClientIsInstalled();
             configurationSource = OracleTestConfigurationSource.CreateConfigurationSource();
         }
@@ -40,8 +42,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [TestMethod]
         public void CanExecuteCommandWithEmptyPackages()
         {
-            ConnectionStringSettings data = ConfigurationManager.ConnectionStrings["OracleTest"];
-
+            ConnectionStringSettings data = OracleTestConfigurationSource.GetConnectionStringSettings("OracleTest");
             OracleDatabase oracleDatabase = new OracleDatabase(data.ConnectionString);
             DbConnection connection = oracleDatabase.CreateConnection();
             Assert.IsNotNull(connection);
@@ -55,7 +56,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructingAnOracleDatabaseWithNullPackageListThrows()
         {
-            ConnectionStringSettings data = ConfigurationManager.ConnectionStrings["OracleTest"];
+            ConnectionStringSettings data = OracleTestConfigurationSource.GetConnectionStringSettings("OracleTest");
 
             new OracleDatabase(data.ConnectionString, null);
         }

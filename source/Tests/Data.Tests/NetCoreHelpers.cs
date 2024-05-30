@@ -9,7 +9,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         // DbProviderFactories are not automatically registered in .NET Core
         public static void RegisterDbProviderFactories()
         {
-#if NET6_0
+#if NET6_0_OR_GREATER
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias1", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias2", SqlClientFactory.Instance);
