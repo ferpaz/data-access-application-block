@@ -20,12 +20,19 @@
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties\" />
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
   </ItemGroup>
 
-  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
+    <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net6'))">
+    <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
     <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
   </ItemGroup>
   
