@@ -32,7 +32,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Configuration
         /// <summary>
         /// Default name for the Sql managed provider.
         /// </summary>
+#if NET6_0_OR_GREATER
+        public const string DefaultSqlProviderName = "Microsoft.Data.SqlClient";
+#else
         public const string DefaultSqlProviderName = "System.Data.SqlClient";
+#endif
         /// <summary>
         /// Default name for the Oracle managed provider.
         /// </summary>

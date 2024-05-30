@@ -8,7 +8,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Configuration.Fluent
     public static class DatabaseProviderExtensions
     {
         /// <summary>
+#if NET6_0_OR_GREATER
+        /// A Sql database for use with the Microsoft.Data.SqlClient namespace.
+#else
         /// A Sql database for use with the System.Data.SqlClient namespace.
+#endif
         /// </summary>
         /// <param name="context">Configuration context</param>
         /// <returns></returns>

@@ -29,11 +29,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net6'))">
-    <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
-    <PackageReference Include="System.Data.SqlClient" Version="$(SystemDataSqlClientVersion)" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
   </ItemGroup>
   
   <ItemGroup>

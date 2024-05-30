@@ -3,7 +3,11 @@
 using System;
 using System.Data;
 using System.Data.Common;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 using System.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -17,7 +21,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql
     /// </summary>
     /// <remarks>
     /// <para>
+#if NET6_0_OR_GREATER
+    /// Internally uses SQL Server .NET Managed Provider from Microsoft (Microsoft.Data.SqlClient) to connect to the database.
+#else
     /// Internally uses SQL Server .NET Managed Provider from Microsoft (System.Data.SqlClient) to connect to the database.
+#endif
     /// </para>
     /// </remarks>
     [ConfigurationElementType(typeof(SqlDatabaseData))]

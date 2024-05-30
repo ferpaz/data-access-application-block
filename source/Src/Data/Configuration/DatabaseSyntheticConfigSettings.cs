@@ -142,7 +142,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Configuration
         {
             var section = configurationSource("connectionStrings") as ConnectionStringsSection;
 
-            return section != null ? section.ConnectionStrings : ConfigurationManager.ConnectionStrings;
+            return section != null 
+                ? section.ConnectionStrings :
+                ConfigurationManager.ConnectionStrings;
         }
 
         private static bool IsValidProviderName(string providerName)
