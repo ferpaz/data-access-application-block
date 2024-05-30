@@ -6,7 +6,7 @@
 		<PreAssemblyName>Microsoft.Practices.EnterpriseLibrary</PreAssemblyName>
 		<PrePackageName>EnterpriseLibrary</PrePackageName>
 		<PostPackageName>.NetCore</PostPackageName>
-		<PackageReleaseNotes>This package is distributed as .NET Standard 2.0, .NET Core 2.1, .NET Core 3.1, 4.5.2, 4.6, 4.7 package. See project wiki for migration from previous versions instructions.</PackageReleaseNotes>
+		<PackageReleaseNotes>This package is distributed as .Net Framework 4.7, .NET Standard 2.0, .NET 6, .NET 8 package. See project wiki for migration from previous versions instructions.</PackageReleaseNotes>
 
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -19,7 +19,7 @@
 		<PackageProjectUrl>https://github.com/EnterpriseLibrary/data-access-application-block</PackageProjectUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 
-		<RepositoryUrl>https://github.com/EnterpriseLibrary/data-access-application-block.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/ferpaz/data-access-application-block</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 
 		<OutputPath>$(SolutionDir)..\bin\$(Configuration)\</OutputPath>
