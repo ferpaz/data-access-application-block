@@ -3,7 +3,11 @@
 using System;
 using System.Configuration;
 using System.Data.Common;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 using Microsoft.Practices.EnterpriseLibrary.Data.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.EnterpriseLibrary.Data.Configuration;
@@ -36,7 +40,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             ConnectionStringSettings data = settings.GetConnectionStringSettings("DbWithSqlServerAuthn");
             SqlDatabase sqlDatabase = new SqlDatabase(data.ConnectionString);
 
+#if NET6_0_OR_GREATER
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=false;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+#else
             Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=false;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+#endif
         }
 
         [TestMethod]
@@ -46,7 +54,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             ConnectionStringSettings data = settings.GetConnectionStringSettings("NewDatabase");
             SqlDatabase sqlDatabase = new SqlDatabase(data.ConnectionString);
 
+#if NET6_0_OR_GREATER
+            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+#else
             Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), sqlDatabase.ConnectionStringWithoutCredentials);
+#endif
         }
 
         [TestMethod]
@@ -142,7 +154,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
             {
                 CreateUser();
                 ConnectionString testString =
-                    new ConnectionString(String.Format(@"server={0};initial catalog=Northwind;uid=entlib;pwd=hdf7&834k(*KA;Persist Security Info=false", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), "UserId,UId", "Password,Pwd");
+#if NET6_0_OR_GREATER
+                    new ConnectionString(String.Format(@"server={0};initial catalog=Northwind;uid=entlib;pwd=hdf7&834k(*KA;Persist Security Info=false;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), "UserId,UId", "Password,Pwd");
+#else
+                    new ConnectionString(String.Format(@"server={0};initial catalog=Northwind;uid=entlib;pwd=hdf7&834k(*KA;Persist Security Info=false;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), "UserId,UId", "Password,Pwd");
+#endif
                 SqlDatabase sqlDatabase = new SqlDatabase(testString.ToString());
                 DbConnection dbConnection = sqlDatabase.CreateConnection();
                 dbConnection.Open();

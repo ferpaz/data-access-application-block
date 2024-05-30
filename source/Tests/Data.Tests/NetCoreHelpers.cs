@@ -1,5 +1,9 @@
 ﻿using System.Data.Common;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 using Oracle.ManagedDataAccess.Client;
 
 namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
@@ -10,7 +14,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         public static void RegisterDbProviderFactories()
         {
 #if NET6_0_OR_GREATER
-            DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias1", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Data.Tests.SqlAlias2", SqlClientFactory.Instance);
             DbProviderFactories.RegisterFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);

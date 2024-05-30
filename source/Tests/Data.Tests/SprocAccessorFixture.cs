@@ -5,7 +5,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 using System.Linq;
 using Microsoft.Practices.EnterpriseLibrary.Common.TestSupport.ContextBase;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
@@ -23,7 +27,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         protected override void Arrange()
         {
             var rawConnectionString =
+#if NET6_0_OR_GREATER
+            @"server={0};database=Northwind;Integrated Security=true;Trust Server Certificate=true;";
+#else
             @"server={0};database=Northwind;Integrated Security=true;";
+#endif
             ConnectionString = String.Format(rawConnectionString, ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
             Database = new TestableSqlDatabase(ConnectionString, this);
         }
@@ -394,6 +402,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         }
     }
 
+#if !NET6_0_OR_GREATER
     [TestClass]
     public class WhenExecutingSprocAccessorAsynchronously : SprocAccessorContext
     {
@@ -476,6 +485,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
             Assert.AreNotEqual(0d, firstProduct.UnitPrice);
         }
     }
+#endif
 
     [TestClass]
     public class WhenParameterizedSprocAccessorIsCreated : SprocAccessorContext

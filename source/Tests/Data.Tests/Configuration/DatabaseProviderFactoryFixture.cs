@@ -2,6 +2,7 @@
 
 using System;
 using System.Configuration;
+using System.Configuration.Provider;
 using System.Data.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
@@ -27,7 +28,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
-            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
+            Assert.AreEqual(ExpectedConnetionString(),
                             createdObject.ConnectionStringWithoutCredentials);
         }
 
@@ -39,8 +40,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
-            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
-                            createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(ExpectedConnetionString(), createdObject.ConnectionStringWithoutCredentials);
         }
 
         [TestMethod]
@@ -50,8 +50,15 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             Database createdObject = factory.Create("Service_Dflt");
 
             Assert.IsNotNull(createdObject);
-            Assert.AreEqual(String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]),
-                            createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(ExpectedConnetionString(), createdObject.ConnectionStringWithoutCredentials);
+        }
+        private static string ExpectedConnetionString()
+        {
+#if NET6_0_OR_GREATER
+            return String.Format(@"server={0};initial catalog=northwind;integrated security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+#else
+            return String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+#endif
         }
 
         [TestMethod]
@@ -59,10 +66,18 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         {
             DictionaryConfigurationSource configurationSource = new DictionaryConfigurationSource();
             ConnectionStringsSection section = new ConnectionStringsSection();
+#if NET6_0_OR_GREATER
+            section.ConnectionStrings.Add(new ConnectionStringSettings("cs1", "cs1", "Microsoft.Data.SqlClient"));
+#else
             section.ConnectionStrings.Add(new ConnectionStringSettings("cs1", "cs1", "System.Data.SqlClient"));
+#endif
             section.ConnectionStrings.Add(new ConnectionStringSettings("cs2", "cs2"));
             section.ConnectionStrings.Add(new ConnectionStringSettings("cs3", "cs3", "a bogus provider name"));
+#if NET6_0_OR_GREATER
+            section.ConnectionStrings.Add(new ConnectionStringSettings("cs4", "cs4", "Microsoft.Data.SqlClient"));
+#else
             section.ConnectionStrings.Add(new ConnectionStringSettings("cs4", "cs4", "System.Data.SqlClient"));
+#endif
             configurationSource.Add("connectionStrings", section);
 
             var factory = new DatabaseProviderFactory(configurationSource.GetSection);

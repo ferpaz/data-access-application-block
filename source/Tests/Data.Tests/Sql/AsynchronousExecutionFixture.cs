@@ -532,7 +532,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         public void ThenNoNewConnectionWasCreated()
         {
             database.EndExecuteXmlReader(asyncResult).Close();
-            while (!asyncResult.IsCompleted) 
+            while (!asyncResult.IsCompleted)
             {
                 System.Threading.Thread.Sleep(100);
             }

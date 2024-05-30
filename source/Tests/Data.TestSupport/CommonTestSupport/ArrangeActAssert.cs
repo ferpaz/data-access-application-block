@@ -2,7 +2,11 @@
 
 using System;
 using System.Collections.Generic;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -25,7 +29,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Common.TestSupport.ContextBase
         /// before the <see cref="Act"/> method.</remarks>
         protected virtual void Arrange()
         {
-            
+
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Common.TestSupport.ContextBase
         /// and before each test method runs.</remarks>
         protected virtual void Act()
         {
-            
+
         }
 
         /// <summary>

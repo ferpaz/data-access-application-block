@@ -28,8 +28,12 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
                     {
                         Name = "sql connection",
                         ConnectionString = "connection string",
-                        ProviderName = "System.Data.SqlClient"
-                    });
+#if NET6_0_OR_GREATER
+                    ProviderName = "Microsoft.Data.SqlClient"
+#else
+                    ProviderName = "System.Data.SqlClient"
+#endif
+                });
             configurationSource.Add("connectionStrings", connectionStringsSection);
 
             settings = new DatabaseSyntheticConfigSettings(this.configurationSource.GetSection);

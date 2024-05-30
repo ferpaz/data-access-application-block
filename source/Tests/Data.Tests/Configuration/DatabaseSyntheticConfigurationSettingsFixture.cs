@@ -152,7 +152,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             var connectionStrings = new ConnectionStringsSection();
             connectionStrings.ConnectionStrings.Add(
+#if NET6_0_OR_GREATER
+                new ConnectionStringSettings("someSetting", "someConnectionString", "Microsoft.Data.SqlClient"));
+#else
                 new ConnectionStringSettings("someSetting", "someConnectionString", "System.Data.SqlClient"));
+#endif
 
             configSource.Add("connectionStrings", connectionStrings);
 
@@ -352,6 +356,28 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             configSettings = new DatabaseSyntheticConfigSettings(configSource.GetSection);
         }
 
+#if NET6_0_OR_GREATER
+        [TestMethod]
+        public void WhenConstructed_DatabasesMatchTheConnectionStringsInTheConfigurationFileForTheAppDomain()
+        {
+            var databases = configSettings.Databases.ToDictionary(data => data.Name);
+
+            Assert.IsTrue(databases.Count >= 7);
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    "Service_Dflt",
+                    "OracleTest",
+                    "mapping1",
+                    "mapping2",
+                    "NewDatabase",
+                    "DbWithSqlServerAuthn",
+                    "NorthwindPersistFalse"
+                },
+                databases.Keys);
+
+        }
+#else
         [TestMethod]
         public void WhenConstructed_DatabasesMatchTheConnectionStringsInTheConfigurationFileForTheAppDomain()
         {
@@ -373,5 +399,6 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
                 databases.Keys);
 
         }
+#endif
     }
 }

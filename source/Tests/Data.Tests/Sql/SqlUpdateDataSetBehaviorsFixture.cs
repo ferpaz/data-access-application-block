@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
 
 using System.Data;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
+using Microsoft.Practices.EnterpriseLibrary.Data.Tests;
 using Microsoft.Practices.EnterpriseLibrary.Data.Tests.Properties;
 using Microsoft.Practices.EnterpriseLibrary.Data.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +19,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestInitialize]
         public void Initialize()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             DatabaseProviderFactory factory = new DatabaseProviderFactory(TestConfigurationSource.CreateConfigurationSource());
             db = factory.CreateDefault();
 

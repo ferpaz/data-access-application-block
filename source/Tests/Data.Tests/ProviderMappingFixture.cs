@@ -20,6 +20,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         const string OdbcProviderName = "System.Data.Odbc";
 
         [TestMethod]
+        [Ignore("We don't support this scenario now. Provider must be mapped to be used.")]
         public void WillGetMappedProviderType()
         {
             DatabaseSettings databaseSettings = new DatabaseSettings();

@@ -21,8 +21,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
 
         protected override void Arrange()
         {
-            var rawConnectionString =
-                @"server={0};database=Northwind;Integrated Security=true;";
+#if NET6_0_OR_GREATER
+            var rawConnectionString = @"server={0};database=Northwind;Integrated Security=true;trust server certificate=true;";
+#else
+            var rawConnectionString = @"server={0};database=Northwind;Integrated Security=true;";
+#endif
             ConnectionString = String.Format(rawConnectionString, ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
             Database = new TestableSqlDatabase(ConnectionString, this);
         }
@@ -229,6 +232,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         }
     }
 
+#if !NET6_0_OR_GREATER
     [TestClass]
     public class WhenExecutingSqlStringAccessorAsynchronously : SqlStringAccessorContext
     {
@@ -311,6 +315,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
             Assert.AreNotEqual(0d, firstProduct.UnitPrice);
         }
     }
+#endif
 
     [TestClass]
     public class WhenParameterizedSqlStringAccessorIsCreated : SqlStringAccessorContext

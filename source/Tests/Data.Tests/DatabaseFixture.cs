@@ -13,7 +13,11 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void ConstructDatabaseWithNullConnectionStringThrows()
         {
+#if NET6_0_OR_GREATER
+            DbProviderFactory factory = DbProviderFactories.GetFactory("Microsoft.Data.SqlClient");
+#else
             DbProviderFactory factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
+#endif
             new TestDatabase(null, factory);
         }
 

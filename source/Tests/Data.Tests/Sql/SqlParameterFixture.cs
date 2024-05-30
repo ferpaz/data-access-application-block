@@ -2,6 +2,7 @@
 
 using System.Data;
 using System.Data.Common;
+using Microsoft.Practices.EnterpriseLibrary.Data.Tests;
 using Microsoft.Practices.EnterpriseLibrary.Data.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,6 +14,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestMethod]
         public void CanInsertNullStringParameter()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
+
             Database db = null;
             DatabaseProviderFactory factory = new DatabaseProviderFactory(TestConfigurationSource.CreateConfigurationSource());
             db = factory.CreateDefault();

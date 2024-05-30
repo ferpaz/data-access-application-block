@@ -60,7 +60,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Oracle.Tests.TestSupport
         public static ConnectionStringSettings GetConnectionStringSettings(string name)
         {
 #if NET6_0_OR_GREATER
-            return new("OracleTest", OracleTestConfigurationSource.Configuration.GetConnectionString(name), "Oracle.ManagedDataAccess.Client");
+            return new(name, OracleTestConfigurationSource.Configuration.GetConnectionString(name), "Oracle.ManagedDataAccess.Client");
 #else
             return ConfigurationManager.ConnectionStrings[name];
 #endif
