@@ -4,11 +4,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using System.Transactions;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests;
@@ -239,9 +235,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Sql
         public void CanExecuteOperationAfterExecuteReaderThrowsExceptionWithAmbientTransaction_Bug2769()
         {
 #if NET6_0_OR_GREATER
-            var database = new SqlDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;trust server certificate=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]));
+            var database = new SqlDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString);
 #else
-            var database = new SqlDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]));
+            var database = new SqlDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString);
 #endif
 
             using (var scope = new TransactionScope())

@@ -63,3 +63,7 @@ Interested in helping out? That's great. Look at the [issues](https://github.com
 and see if there's something you'd like to work on, or [open a new issue](https://github.com/EnterpriseLibrary/data-access-application-block/issues/new/choose)
 if you have a new idea. Once your new issue is approved, head to the [wiki](https://github.com/EnterpriseLibrary/data-access-application-block/wiki)
 to learn about our coding conventions and how to set up your environment, fork and submit a PR.
+
+### Desarrollo con Common
+
+La solución principal es `source/Data.slnx` y usa el paquete Common por defecto. Para desarrollar con el repositorio hermano `common-infrastructure`, abre `source/Data (With Dependencies).slnx` y establece la propiedad MSBuild `EntLibDependencyType=Project`. La ruta predeterminada busca `../common-infrastructure/source/Src/Common/Common.csproj` desde la raíz de este repositorio; se puede cambiar mediante `EntLibCommon`. El modo Project falla si el proyecto no existe. La migración a .NET 10 y las pruebas asociadas siguen en curso; consulta `source/UPGRADE_NET10.md` para conocer su estado.

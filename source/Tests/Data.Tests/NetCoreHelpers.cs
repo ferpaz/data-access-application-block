@@ -1,9 +1,5 @@
-﻿using System.Data.Common;
-#if NET6_0_OR_GREATER
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using Oracle.ManagedDataAccess.Client;
 
 namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Transactions;
 using System.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.TestSupport;
@@ -20,7 +20,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestMethod]
         public void ThenSupportsAsyncIsTrue()
         {
-            var db = new SqlDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]));
+            var db = new SqlDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString);
             Assert.IsTrue(db.SupportsAsync);
         }
     }
@@ -28,7 +28,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     [TestClass]
     public class WhenUsingAnySqlDatabase : ArrangeActAssert
     {
-        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string connectionstring = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
         protected SqlDatabase database;
 
         protected override void Arrange()
@@ -56,7 +56,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     {
         protected int numberOfConnectionsCreated;
         protected ConnectionState lastConnectionStateChange;
-        protected string connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string connectionstring = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
         protected SqlDatabase database;
 
         protected override void Arrange()
@@ -531,7 +531,10 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
         [TestMethod]
         public void ThenNoNewConnectionWasCreated()
         {
-            database.EndExecuteXmlReader(asyncResult).Close();
+            using (var reader = database.EndExecuteXmlReader(asyncResult))
+            {
+                while (reader.Read()) { }
+            }
             while (!asyncResult.IsCompleted)
             {
                 System.Threading.Thread.Sleep(100);
@@ -1114,7 +1117,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     {
         protected override void Arrange()
         {
-            this.connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+            this.connectionstring = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
             base.Arrange();
         }
     }
@@ -1124,7 +1127,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Sql.Tests
     {
         protected override void Arrange()
         {
-            this.connectionstring = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+            this.connectionstring = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
             base.Arrange();
         }
     }

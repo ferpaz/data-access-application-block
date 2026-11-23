@@ -2,11 +2,7 @@
 
 using System.Data.Common;
 using System.Data.Odbc;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

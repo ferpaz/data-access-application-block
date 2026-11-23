@@ -4,6 +4,8 @@ using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Data.Common;
+using Microsoft.Data.SqlClient;
+using OracleConnectionStringBuilder = Oracle.ManagedDataAccess.Client.OracleConnectionStringBuilder;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
@@ -29,7 +31,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
             Assert.AreEqual(ExpectedConnetionString(),
-                            createdObject.ConnectionStringWithoutCredentials);
+                            new SqlConnectionStringBuilder(createdObject.ConnectionStringWithoutCredentials).ConnectionString.ToLowerInvariant());
         }
 
         [TestMethod]
@@ -40,7 +42,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             Assert.IsNotNull(createdObject);
             Assert.IsInstanceOfType(createdObject, typeof(SqlDatabase));
-            Assert.AreEqual(ExpectedConnetionString(), createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(ExpectedConnetionString(), new SqlConnectionStringBuilder(createdObject.ConnectionStringWithoutCredentials).ConnectionString.ToLowerInvariant());
         }
 
         [TestMethod]
@@ -50,17 +52,15 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
             Database createdObject = factory.Create("Service_Dflt");
 
             Assert.IsNotNull(createdObject);
-            Assert.AreEqual(ExpectedConnetionString(), createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(ExpectedConnetionString(), new SqlConnectionStringBuilder(createdObject.ConnectionStringWithoutCredentials).ConnectionString.ToLowerInvariant());
         }
         private static string ExpectedConnetionString()
         {
-#if NET6_0_OR_GREATER
-            return String.Format(@"server={0};initial catalog=northwind;integrated security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
-#else
-            return String.Format(@"server={0};initial catalog=northwind;integrated security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
-#endif
+            var expected = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString);
+            expected.Remove("User ID");
+            expected.Remove("Password");
+            return expected.ConnectionString.ToLowerInvariant();
         }
-
         [TestMethod]
         public void SkipsConnectionStringsWithoutProviderNamesOrWithProviderNamesWhichDoNotMapToAProviderFactory()
         {
@@ -113,8 +113,12 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
 
             OracleDatabase createdObject = (OracleDatabase)factory.Create("OracleTest");
             Assert.IsNotNull(createdObject);
-            //Assert.AreEqual(@"server=entlib;", createdObject.ConnectionStringWithoutCredentials);
-            Assert.AreEqual(@"data source=(description=(cid=xe)(address_list=(address=(protocol=tcp)(host=localhost)(port=1521)))(connect_data=(sid=xe)(server=dedicated)));", createdObject.ConnectionStringWithoutCredentials);
+            //Assert.AreEqual(@"server=entlib;", new SqlConnectionStringBuilder(createdObject.ConnectionStringWithoutCredentials).ConnectionString.ToLowerInvariant());
+            var expected = new OracleConnectionStringBuilder(ConfigurationManager.ConnectionStrings["OracleTest"].ConnectionString);
+            var actual = new OracleConnectionStringBuilder(createdObject.ConnectionStringWithoutCredentials);
+            Assert.AreEqual(expected.DataSource.ToLowerInvariant(), actual.DataSource.ToLowerInvariant());
+            Assert.IsTrue(string.IsNullOrEmpty(actual.UserID));
+            Assert.IsTrue(string.IsNullOrEmpty(actual.Password));
 
             // can do the configured package mapping?
             Assert.AreEqual(DatabaseFactoryFixture.OracleTestTranslatedStoredProcedureInPackageWithTranslation,

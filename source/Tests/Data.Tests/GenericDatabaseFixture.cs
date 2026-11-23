@@ -5,11 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using System.IO;
 using System.Reflection;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -44,9 +40,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         public void CanDoExecuteDataReaderForGenericDatabaseForSqlProviderBug1836()
         {
 #if NET6_0_OR_GREATER
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #else
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #endif
 
 
@@ -66,9 +62,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         public void DSDBWrapperTransSqlNoCommitTestBug1857()
         {
 #if NET6_0_OR_GREATER
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #else
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #endif
 
             using (DbConnection connection = db.CreateConnection())
@@ -89,9 +85,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         public void GenericDatabaseThrowsWhenAskedToDeriveParameters()
         {
 #if NET6_0_OR_GREATER
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true;trust server certificate=true;", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #else
-            Database db = new GenericDatabase(String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]), SqlClientFactory.Instance);
+            Database db = new GenericDatabase(ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString, SqlClientFactory.Instance);
 #endif
             DbCommand storedProcedure = db.GetStoredProcCommand("CustOrdersOrders");
             db.DiscoverParameters(storedProcedure);

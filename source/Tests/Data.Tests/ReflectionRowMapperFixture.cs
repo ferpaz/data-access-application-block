@@ -41,9 +41,9 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
         protected IEnumerable<PropertyMapping> propertyMappings;
         protected string CommandText = "SELECT 'ALKI' as CustomerID, 'Violet street 23' as ShipAddress, 12.6 as freight, null SqlNull";
 #if NET6_0_OR_GREATER
-        protected string ConnectionString = String.Format(@"server={0};database=Northwind;Integrated Security=true;trust server certificate=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string ConnectionString = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
 #else
-        protected string ConnectionString = String.Format(@"server={0};database=Northwind;Integrated Security=true", ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+        protected string ConnectionString = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
 #endif
         protected IDataReader reader;
 

@@ -58,6 +58,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         [TestInitialize]
         public void Given()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             // Setup connection strings
             configurationSource = new DictionaryConfigurationSource();
             var connectionStringsSection = new ConnectionStringsSection();

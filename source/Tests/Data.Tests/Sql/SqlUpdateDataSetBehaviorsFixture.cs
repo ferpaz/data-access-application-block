@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
 
 using System.Data;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using Microsoft.Practices.EnterpriseLibrary.Data.Tests;
 using Microsoft.Practices.EnterpriseLibrary.Data.Tests.Properties;
 using Microsoft.Practices.EnterpriseLibrary.Data.TestSupport;

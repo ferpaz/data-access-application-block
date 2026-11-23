@@ -1,11 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\..\package.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net47;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0;net10.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
 
     <AssemblyVersion>$(MajorVersion).0.0.0</AssemblyVersion>
@@ -19,13 +19,9 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <EntLibCommon>..\..\..\..\Common\source\Src\Common\Common.csproj</EntLibCommon>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="$(EntLibCommon)" Condition="Exists('$(EntLibCommon)') AND '$(EntLibDependencyType)' == 'Project'" />
-    <PackageReference Include="$(PrePackageName).Common$(PostPackageName)" Version="$(EntLibCommonVersion)" Condition="!Exists('$(EntLibCommon)') OR '$(EntLibDependencyType)' == 'Package'" />
+<ItemGroup>
+    <ProjectReference Include="$(EntLibCommon)" Condition="'$(EntLibDependencyType)' == 'Project'" />
+    <PackageReference Include="$(PrePackageName).Common$(PostPackageName)" Version="$(EntLibCommonVersion)" Condition="'$(EntLibDependencyType)' == 'Package'" />
 
     <ProjectReference Include="..\..\Src\Data\Data.csproj" />
     <ProjectReference Include="..\..\Src\Data.SqlServer\Data.SqlServer.csproj" />
@@ -42,12 +38,12 @@
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.18.151" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net6'))">
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.140" />
-  </ItemGroup>
-
   <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.4.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net10'))">
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
   </ItemGroup>
 
   <ItemGroup>

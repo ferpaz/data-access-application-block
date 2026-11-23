@@ -3,15 +3,9 @@
 using System;
 using System.Data;
 using System.Data.Common;
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 using Microsoft.Practices.EnterpriseLibrary.Data.Tests;
 
-#else
-using System.Data.SqlClient;
-using Microsoft.Practices.EnterpriseLibrary.Data.Tests;
-
-#endif
 using Microsoft.Practices.EnterpriseLibrary.Data.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

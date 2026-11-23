@@ -232,6 +232,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         [TestInitialize]
         public void Setup()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             var configSource = new DictionaryConfigurationSource();
 
             var connectionStrings = new ConnectionStringsSection();
@@ -266,6 +267,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         [TestInitialize]
         public void Setup()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             var configSource = new DictionaryConfigurationSource();
 
             var connectionStrings = new ConnectionStringsSection();
@@ -302,6 +304,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests.Configuration
         [TestInitialize]
         public void Setup()
         {
+            NetCoreHelpers.RegisterDbProviderFactories();
             var configSource = new DictionaryConfigurationSource();
 
             var connectionStrings = new ConnectionStringsSection();

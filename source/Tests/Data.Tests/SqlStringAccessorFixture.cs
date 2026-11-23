@@ -21,12 +21,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data.Tests
 
         protected override void Arrange()
         {
-#if NET6_0_OR_GREATER
-            var rawConnectionString = @"server={0};database=Northwind;Integrated Security=true;trust server certificate=true;";
-#else
-            var rawConnectionString = @"server={0};database=Northwind;Integrated Security=true;";
-#endif
-            ConnectionString = String.Format(rawConnectionString, ConfigurationManager.AppSettings["SqlServerDatabaseInstance"]);
+ConnectionString = ConfigurationManager.ConnectionStrings["Service_Dflt"].ConnectionString;
             Database = new TestableSqlDatabase(ConnectionString, this);
         }
 
