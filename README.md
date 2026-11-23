@@ -67,3 +67,50 @@ to learn about our coding conventions and how to set up your environment, fork a
 ### Desarrollo con Common
 
 La solución principal es `source/Data.slnx` y usa el paquete Common por defecto. Para desarrollar con el repositorio hermano `common-infrastructure`, abre `source/Data (With Dependencies).slnx` y establece la propiedad MSBuild `EntLibDependencyType=Project`. La ruta predeterminada busca `../common-infrastructure/source/Src/Common/Common.csproj` desde la raíz de este repositorio; se puede cambiar mediante `EntLibCommon`. El modo Project falla si el proyecto no existe. La migración a .NET 10 y las pruebas asociadas siguen en curso; consulta `source/UPGRADE_NET10.md` para conocer su estado.
+
+Para actualizar una aplicación a `10.0.0-rc1`, consulta la [guía de migración](docs/Pages/UpgradeNet10.md). Los temas diferidos y fuera de alcance están en [POST-UPGRADE-NET10.md](source/POST-UPGRADE-NET10.md).
+
+### Consumir paquetes del feed privado
+
+Los paquetes `EnterpriseLibrary.Data.NetCore`, `EnterpriseLibrary.Data.SqlServer.NetCore` y `EnterpriseLibrary.Data.Oracle.NetCore` versión `10.0.0-rc1` están disponibles en `https://nuget.aseinfo.net/nuget` (NuGet v2). La dependencia `EnterpriseLibrary.Common.NetCore` 6.3.0 se obtiene de NuGet público; no se requiere publicar el fork de Common.
+
+Para un consumidor, puedes configurar ambos orígenes mediante un `NuGet.Config` **sin credenciales**, en la raíz del consumidor:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="aseinfo" value="https://nuget.aseinfo.net/nuget" protocolVersion="2" />
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+  </packageSources>
+  <packageSourceMapping>
+    <packageSource key="aseinfo">
+      <package pattern="EnterpriseLibrary.Data.NetCore" />
+      <package pattern="EnterpriseLibrary.Data.SqlServer.NetCore" />
+      <package pattern="EnterpriseLibrary.Data.Oracle.NetCore" />
+    </packageSource>
+    <packageSource key="nuget.org">
+      <package pattern="*" />
+    </packageSource>
+  </packageSourceMapping>
+</configuration>
+```
+
+El mapeo requiere una versión de NuGet que admita Package Source Mapping. Los nombres exactos tienen prioridad sobre `*`: los tres paquetes Data se buscan en el feed privado y Common y las demás dependencias en NuGet público. Ajusta el mapeo si el consumidor necesita otros paquetes privados. `<clear />` limita los orígenes a los indicados en este archivo.
+
+Agrega referencias a la versión `10.0.0-rc1` de los paquetes que necesite el consumidor y restaura, por ejemplo:
+
+```powershell
+dotnet restore .\MiProyecto.csproj --configfile .\NuGet.Config
+```
+
+Si el feed exige autenticación de lectura, utiliza el proveedor de credenciales o mecanismo seguro aprobado por el servidor; no agregues secretos a `NuGet.Config` ni al repositorio. La API key de publicación no es necesariamente una credencial de lectura.
+
+Para verificar la restauración sin usar paquetes de la caché global ni la caché HTTP, elige una carpeta vacía **fuera del repositorio** y ejecuta:
+
+```powershell
+dotnet restore .\MiProyecto.csproj --configfile .\NuGet.Config --no-http-cache --packages C:\Temp\NuGetFeedCheck
+```
+
+Comprueba el origen de cada paquete en el archivo `.nupkg.metadata` de esa carpeta. Una restauración aislada `net48` verificó los tres paquetes Data desde el feed privado y Common 6.3.0 desde NuGet público; esto no sustituye las pruebas funcionales de cada consumidor.

@@ -1,4 +1,6 @@
 ## Upgrading from version 6 to version 7   {#Upgrade}
+For `10.0.0-rc1`, see the [migration guide](@ref UpgradeNet10). The instructions below describe the historical version 7 release.
+
 In previous versions, all databases were supported by one package, EnterpriseLibrary.Data.NetCore (or, if you are
 using the original package from Microsoft, EnterpriseLibrary.Data). To enable support of new databases, and use the
 best packages to support each database, this has changed in version 7. In this version, only a generic database

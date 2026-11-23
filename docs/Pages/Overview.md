@@ -37,6 +37,8 @@ Oracle             | EnterpriseLibrary.Data.Oracle.NetCore    | .NET 4.5.2, 4.6,
 ODBC               | EnterpriseLibrary.Data.Odbc.NetCore      | .NET 4.5.2, 4.6, 4.7; .NET Core 2.1, 3.1; .NET Standard 2.0
 SQL Server CE      | EnterpriseLibrary.Data.SqlCe.NetCore     | .NET 4.5.2, 4.6, 4.7
 
+> The package and provider tables above describe the historical version 7 release. For `10.0.0-rc1`, see the [migration guide](@ref UpgradeNet10), including the SQL provider and target changes.
+
 ### Configuration  {#Configuration}
 After installing the appropriate package(s), you should add the following configuration elements to your app.config or web.config
 file.
