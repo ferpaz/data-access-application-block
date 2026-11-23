@@ -114,10 +114,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
         public override IAsyncResult BeginExecute(AsyncCallback callback, object state, params object[] parameterValues)
         {
             GuardAsyncAllowed();
-            using (var command = Database.GetSqlStringCommand(sqlString))
-            {
-                return BeginExecute(command, parameterMapper, callback, state, parameterValues);
-            }
+            var command = Database.GetSqlStringCommand(sqlString);
+            return BeginExecuteOwned(command, parameterMapper, callback, state, parameterValues);
         }
 
         private class DefaultSqlStringParameterMapper : IParameterMapper

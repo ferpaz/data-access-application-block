@@ -116,10 +116,8 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
         {
             GuardAsyncAllowed();
 
-            using (DbCommand command = Database.GetStoredProcCommand(procedureName))
-            {
-                return BeginExecute(command, parameterMapper, callback, state, parameterValues);
-            }
+            DbCommand command = Database.GetStoredProcCommand(procedureName);
+            return BeginExecuteOwned(command, parameterMapper, callback, state, parameterValues);
         }
 
         private class DefaultParameterMapper : IParameterMapper

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Microsoft.Practices.EnterpriseLibrary.Data.Properties;
 
 namespace Microsoft.Practices.EnterpriseLibrary.Data
@@ -17,6 +18,7 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
     {
         private readonly IResultSetMapper<TResult> resultSetMapper;
         private readonly Database database;
+        private readonly ConditionalWeakTable<IAsyncResult, DbCommand> ownedCommands = new ConditionalWeakTable<IAsyncResult, DbCommand>();
 
         /// <summary>
         /// Initialized the <see cref="CommandAccessor{TResult}"/> with a database instance and a Row Mapper.
@@ -85,16 +87,76 @@ namespace Microsoft.Practices.EnterpriseLibrary.Data
             return database.BeginExecuteReader(command, callback, state);
         }
 
+        internal IAsyncResult BeginExecuteOwned(DbCommand command, IParameterMapper parameterMapper,
+            AsyncCallback callback, object state, object[] parameterValues)
+        {
+            var registrationLock = new object();
+            bool registered = false;
+            Action<IAsyncResult> register = result =>
+            {
+                lock (registrationLock)
+                {
+                    if (!registered)
+                    {
+                        ownedCommands.Add(result, command);
+                        registered = true;
+                    }
+                }
+            };
+
+            try
+            {
+                parameterMapper.AssignParameters(command, parameterValues);
+                AsyncCallback wrappedCallback = callback == null ? null : new AsyncCallback(result =>
+                {
+                    register(result);
+                    callback(result);
+                });
+                var asyncResult = database.BeginExecuteReader(command, wrappedCallback, state);
+                register(asyncResult);
+                return asyncResult;
+            }
+            catch
+            {
+                command.Dispose();
+                throw;
+            }
+        }
         /// <summary>Complete an operation started by <see cref="DataAccessor{TResult}.BeginExecute"/>.</summary>
         /// <returns>The result sequence.</returns>
         public override IEnumerable<TResult> EndExecute(IAsyncResult asyncResult)
         {
             GuardAsyncAllowed();
-
-            IDataReader reader = database.EndExecuteReader(asyncResult);
-            return resultSetMapper.MapSet(reader);
+            DbCommand ownedCommand;
+            if (asyncResult == null || !ownedCommands.TryGetValue(asyncResult, out ownedCommand))
+            {
+                IDataReader originalReader = database.EndExecuteReader(asyncResult);
+                return resultSetMapper.MapSet(originalReader);
+            }
+            ownedCommands.Remove(asyncResult);
+            IDataReader reader = null;
+            try
+            {
+                reader = database.EndExecuteReader(asyncResult);
+                var results = resultSetMapper.MapSet(reader);
+                return DisposeAfterEnumeration(results, reader, ownedCommand);
+            }
+            catch
+            {
+                try { reader?.Dispose(); }
+                finally { ownedCommand.Dispose(); }
+                throw;
+            }
         }
 
+        private static IEnumerable<TResult> DisposeAfterEnumeration(IEnumerable<TResult> results, IDataReader reader, DbCommand command)
+        {
+            using (command)
+            using (reader)
+            {
+                foreach (var result in results) yield return result;
+            }
+        }
         /// <summary>
         /// Checks if the current <see cref="Database"/> object supports asynchronous operations,
         /// and throws <see cref="InvalidOperationException"/> if not.

@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/Data Application Block/">
+    <Project Path="Src/Data.Oracle/Data.Oracle.csproj" />
+    <Project Path="Src/Data.SqlServer/Data.SqlServer.csproj" />
+    <Project Path="Src/Data/Data.csproj" />
+  </Folder>
+  <Folder Name="/Data Application Block/Unit Tests/">
+    <Project Path="Tests/Data.Tests/Data.Tests.VSTS.csproj" />
+    <Project Path="Tests/Data.TestSupport/Data.TestSupport.csproj" />
+    <Project Path="Tests/Oracle.Tests.VSTS/Oracle.Tests.VSTS.csproj" />
+    <Properties Name="FolderStartupServices" Scope="PostLoad">
+      <Property Name="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" Value="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+    </Properties>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../appveyor.yml" />
+    <File Path="../package.props" />
+    <File Path="../version.props" />
+    <File Path="CONTINUAR_MIGRACION.md" />
+    <File Path="UPGRADE_NET10.md" />
+    <Properties Name="FolderStartupServices" Scope="PostLoad">
+      <Property Name="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" Value="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+    </Properties>
+  </Folder>
+  <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
+    <Property Name="CategoryFile" Value="Data.vsmdi" />
+  </Properties>
+  <Properties Name="TextTemplating" Scope="PostLoad">
+    <Property Name="TextTemplating" Value="1" />
+  </Properties>
+  <Folder Name="/Common Infrastructure/">
+    <Project Path="../../common-infrastructure/source/Src/Common/Common.csproj" />
+  </Folder>
+</Solution>

@@ -26,10 +26,10 @@ dotnet_csproj:
   patch: false
 
 before_build:
-- cmd: dotnet restore "source\Data.sln"
+- cmd: dotnet restore "source\Data.slnx"
 
 build:
-  project: source\Data.sln
+  project: source\Data.slnx
   parallel: true
   verbosity: minimal
 

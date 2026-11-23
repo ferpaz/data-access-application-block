@@ -47,9 +47,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!--In order to debug the EntLib dependencies open 'Data (With Dependencies).sln' and change 'EntLibDependencyType' value to Project -->
-		<EntLibDependencyType>Package</EntLibDependencyType>
+		<!-- Set EntLibDependencyType=Project to use the sibling Common checkout. -->
+		<EntLibDependencyType Condition="'$(EntLibDependencyType)' == ''">Package</EntLibDependencyType>
+        <EntLibCommon Condition="'$(EntLibCommon)' == ''">$(MSBuildThisFileDirectory)..\common-infrastructure\source\Src\Common\Common.csproj</EntLibCommon>
 		<EntLibCommonVersion>6.3.0</EntLibCommonVersion>
 	</PropertyGroup>
 
+  <Target Name="ValidateEntLibDependency" BeforeTargets="_GenerateRestoreGraphProjectEntry;PrepareForBuild">
+    <Error Condition="'$(EntLibDependencyType)' != 'Package' and '$(EntLibDependencyType)' != 'Project'" Text="EntLibDependencyType must be Package or Project; received '$(EntLibDependencyType)'." />
+    <Error Condition="'$(EntLibDependencyType)' == 'Project' and !Exists('$(EntLibCommon)')" Text="Common project not found at '$(EntLibCommon)'. Set EntLibCommon to the Common.csproj path." />
+  </Target>
 </Project>
