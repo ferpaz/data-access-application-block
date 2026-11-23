@@ -22,6 +22,11 @@
       <Property Name="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" Value="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
     </Properties>
   </Folder>
+  <Folder Name="/Solution Items/nugetPackages/">
+    <File Path="../bin/build.cmd" />
+    <File Path="../bin/delete.cmd" />
+    <File Path="../bin/publish.cmd" />
+  </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Data.vsmdi" />
   </Properties>

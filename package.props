@@ -6,7 +6,7 @@
 		<PreAssemblyName>Microsoft.Practices.EnterpriseLibrary</PreAssemblyName>
 		<PrePackageName>EnterpriseLibrary</PrePackageName>
 		<PostPackageName>.NetCore</PostPackageName>
-		<PackageReleaseNotes>This package is distributed as .NET Framework 4.7, .NET Standard 2.0, .NET 6, .NET 8 package.  The .NET 6 and .NET 8 are using the new Microsoft.Data.SqlClient for connecting to Microsoft SQL Server.  See project wiki for migration from previous versions instructions.</PackageReleaseNotes>
+		<PackageReleaseNotes>Targets .NET Framework 4.8, .NET Standard 2.0, .NET 8 and .NET 10. SQL Server uses Microsoft.Data.SqlClient on all targets; migrating from System.Data.SqlClient can require configuration and code changes. See the project documentation for migration guidance.</PackageReleaseNotes>
 
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
